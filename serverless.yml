@@ -1,0 +1,52 @@
+# serverless.yml
+
+service: cat-api-service # Nombre de tu proyecto
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  region: us-east-1 # O la región que prefieras
+  # Variables de entorno para tu función Lambda.
+  # Es mejor usar AWS Secrets Manager para producción, pero .env está bien para empezar.
+  environment:
+    MONGO_URI: ${env:MONGO_URI}
+    CAT_API_KEY: ${env:CAT_API_KEY}
+
+package:
+  # Indica que no queremos empaquetar archivos, ya que usamos una imagen de contenedor
+  individually: true
+
+functions:
+  # Esta es nuestra función Lambda
+  api:
+    # Le indicamos que el "paquete" es una imagen de contenedor
+    image:
+      # El nombre de la imagen que construiremos
+      name: cat-api-image
+    handler: dist/lambda.handler # No es estrictamente necesario para contenedores, pero es buena práctica
+    events:
+      # Esto crea el API Gateway y le dice que cualquier petición HTTP...
+      - httpApi:
+          # ...en cualquier ruta o método, se la envíe a nuestra función.
+          # NestJS se encargará de enrutar internamente.
+          path: '*'
+          method: '*'
+
+resources:
+  # (Opcional pero recomendado)
+  # Esta sección le dice a Serverless que también cree el repositorio ECR por nosotros.
+  Resources:
+    EcrRepository:
+      Type: AWS::ECR::Repository
+      Properties:
+        RepositoryName: cat-api-serverless-repo # Nombre del repositorio en ECR
+
+custom:
+  # Configuración para que Serverless sepa dónde subir la imagen
+  ecr:
+    images:
+      cat-api-image:
+        path: ./
+        # Apuntamos al repositorio que definimos arriba
+        uri: !Ref EcrRepository
