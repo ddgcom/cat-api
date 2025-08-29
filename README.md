@@ -112,7 +112,21 @@ Este proyecto está configurado para un despliegue automatizado en AWS Lambda a 
     ```
     Esto eliminará la función Lambda, el API Gateway, y el repositorio ECR.
 
----
+### WIKI API
+
+#### 🕹️ Guía de Endpoints de la API
+
+Para una guía detallada de todos los endpoints y ejemplos de cómo probarlos con cURL, consulta el siguiente documento:
+
+* **[Guía de Endpoints y Peticiones cURL](./ENDPOINTS.md)**
+
+#### FRONTENT
+
+* **[Descarga archivo de importacion para postman](./End-to-end.postman_collection.json)**
+
+o
+
+* **[Link a postman](https://test66-1099.postman.co/workspace/44c9a9a6-afe4-418d-9d37-8db67a419954/collection/30722009-784dddc0-079d-4703-9a52-e6717fbd5911?action=share&source=copy-link&creator=30722009)**
 
 ## 🔒 Seguridad
 
